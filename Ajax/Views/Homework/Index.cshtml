@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>旅遊景點</h1>
+<div class="container" >
+    <div id="content" class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+
+    </div>
+</div>
+@section Styles {
+    <style>
+        .col{
+            height: 300px;
+        }
+         .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; 
+        }
+
+        .card-title {
+            white-space: nowrap;
+        }
+        .card-body {
+            flex-grow: 1; 
+            overflow: auto; 
+        } 
+        img{
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="~/js/travel.js"></script>
+    <script>
+        console.log(spots.CommonFormat.Section);
+
+        const content = document.querySelector("#content");
+
+        const datas = spots.CommonFormat.Section.map(s=> {
+            const imgSrc = s.file.img[0] && s.file.img[0].text ? s.file.img[0].text : "";
+            const imgAlt = s.file.img[0] && s.file.img[0].description ? s.file.img[0].description : "";
+            const tel = s.MEMO_TEL != undefined ? s.MEMO_TEL : "";
+            return (
+                `<div class="col">
+                    <div class="card rounded-5 w-100 border-2 border-opacity-25">
+                       <img src="${imgSrc}" class="card-img-top object-fit-cover" alt="${imgAlt}">
+                         <div class= "card-body mt-1">
+                            <div class="row">
+                               <h5 class="card-title">${s.stitle}</h5>
+                               <a href="${s.xurl}" class="btn btn-sm btn-outline-primary mb-4">去旅遊</a>
+                            </div>
+                            <p class= "card-text">${s.CAT2} ${s.CAT1}</p>
+                            <p class= "card-text">${s.xbody}</p>
+                            <p class= "card-text">${tel}</p>
+                            <p class= "card-text"> ${s.MEMO_TIME} </p>
+                            <p class= "card-text">${s.address}</p>
+                            <p class= "card-text">${s.info}</p>
+                        </div>
+                    </div>
+                </div>`
+           
+            )
+        })
+
+        content.innerHTML = datas.join("")
+    </script>
+}

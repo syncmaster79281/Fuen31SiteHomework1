@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<ul id="table">
+
+</ul>
+<table id="empTable" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>年資</th>
+            <th>薪水</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+@section Scripts {
+    <script>
+        const table = document.querySelector("#table");
+
+        const emps = [{ "name": "Tom", "workYears": 3, "salary": 35000 },
+        { "name": "Jack", "workYears": 5, "salary": 40000 },
+        { "name": "Mary", "workYears": 7, "salary": 45000 }];
+        
+        
+        const htmlEmps = emps.map((emp) => {
+            const { name,workYears,salary}=emp;
+            return `<li>${name},${workYears},${salary}</li>`;
+        });
+
+        table.innerHTML = htmlEmps.join("");
+
+
+        const emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+
+        const datas = emp.employees.map(employee => {
+            const { name, workYears, salary } = employee
+            return (
+                `<tr>
+                   <td>${name}</td>
+                   <td>${workYears}</td>
+                   <td>${salary}</td>
+                 </tr>`
+            )
+        })
+
+        document.querySelector('#empTable>tbody').innerHTML = datas.join("")
+
+        //javascript寫法
+        // let template = "";
+        // emps.forEach((emp) => {
+        //     template += `<li>${emp.name},${emp.workYears},${emp.salary}</li>`;
+        // });
+        // table.innerHTML = template;
+
+
+        //jQuery寫法
+        // let template = "";
+        // $.each(emps, function (index, emp) {
+        //     template += `<li>${emp.name},${emp.workYears},${emp.salary}</li>`;
+        // });
+        // $("#table").html(template);
+
+        // //建立Promise
+        // function show(data) {
+        //     const promise = new Promise((resolve, reject) => {
+        //         setTimeout(() => { resolve(data) }, 1000)
+        //     });
+        //     return promise;
+        // }
+      
+        // //寫法2 使用async await 語法糖 要用let 不能使用const
+        // (async () => {
+        //     let data = await show("A");
+        //     console.log(data);
+        //     data = await show("B");
+        //     console.log(data);
+        //     data = await show("C");
+        //     console.log(data);
+        // })();
+
+        //使用Promise 寫法1
+        // console.log(show("A"));
+        // show("A")
+        //     .then((data) => {
+        //         console.log(data)     //A
+        //         return show("B")      //回傳Promise物件
+        //     })
+        //     .then((data) => {         //接收Promise物件
+        //         console.log(data)     //B
+        //         return show("C")
+        //     })
+        //     .then((data) => {
+        //         console.log(data)     //C
+        //     });
+
+        //建立一個Promise物件
+        // const promise = new Promise((resolve, reject) => {
+        //     //非同步程式碼 成功透過resolve回傳資料 失敗透過reject回傳錯誤訊息
+        //     const num = Math.random() > 0.5 ? 1 : 0;
+
+        //     if (num) {
+        //         resolve("成功 > 0.5");
+        //     } else {
+        //         reject("失敗 < 0.5")
+        //     }
+
+
+        // });
+
+        //使用 Promise .then()接收成功訊息 .catch()接收失敗訊息 .finally()不論成功或失敗都會執行
+        // promise
+        //     .then((data) => {
+        //         console.log(data);
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
+        //     .finally(() => {
+        //         console.log("END");
+        //     })
+
+    </script>
+}
+
