@@ -10,4 +10,4 @@
 	ApiController Api Cities 回傳城市
 	ApiController Api Districts 回傳區域
 	ApiController Api Rouds 回傳區域
-[V] 加入Dto接收資料
+[V] 加入Dto接收資料 修改Register Api
