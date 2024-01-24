@@ -10,11 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-<<<<<<< HEAD
         <form asp-action="Register" id="userForm">
-=======
-        <form asp-action="Register">
->>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-2">
                 <label asp-for="Name" class="form-label"></label>
@@ -30,22 +26,22 @@
                 <label asp-for="Age" class="form-label"></label>
                 <input asp-for="Age" class="form-control" id="age" />
                 <span asp-validation-for="Age" class="text-danger"></span>
+            </div> 
+            <div class="mb-2">
+                <label for="userAvatar" class="custom-file-label">頭像:</label>
+                <input type="file" class="custom-file-input" id="userAvatar" name="avatar">
+           
             </div>
             <div id="wrap"></div>
             <div class="mb-2">
-<<<<<<< HEAD
                 @* <button id="sentBtn" type="button" value="註冊" class="btn btn-primary">送出</button> *@
                 <input id="btn" type="submit" value="註冊" class="btn btn-primary">
-=======
-                <button id="sentBtn" type="button" value="註冊" class="btn btn-primary">送出</button>
->>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-<<<<<<< HEAD
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -60,18 +56,6 @@
         // 判斷Name是否重複
         name.addEventListener('change', async () => {
             const url = `@Url.Content("~/api/CheckAccount")?name=${name.value}`;
-=======
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        const nameInput = document.querySelector('#name');
-        const span = document.querySelector('#checkName');
-        const sentBtn = document.querySelector('#sentBtn');
-        
-        // 判斷Name是否重複
-        nameInput.addEventListener('change', async() => {
-            const value = nameInput.value;
-            const url = `@Url.Content("~/api/CheckAccount")?name=${value}`;
->>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
             const response = await fetch(url)
             const result = await response.text();
             console.log(result);
@@ -85,7 +69,6 @@
             span.innerHTML = result;
         });
 
-<<<<<<< HEAD
 
         btn.addEventListener('click', async (event) => {
             event.preventDefault(); //防止submit 送出
@@ -106,18 +89,6 @@
 
             const value = await response.text();
             appendAlert(value, "info")
-=======
-        //練習get方法傳送資料到API 並接收回傳值
-        sentBtn.addEventListener('click', async() => {
-            const name = document.querySelector('#name').value;
-            const email = document.querySelector('#email').value;
-            const age = document.querySelector('#age').value;
-            const url = `@Url.Content("~/api/RegisterMember")?name=${name}&email=${email}&age=${age}`;
-            console.log(url);
-            const response = await fetch(url);
-            const value = await response.text();
-            appendAlert(value,"info")
->>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
 
         });
 
@@ -126,15 +97,9 @@
             const wrapper = document.querySelector('#wrap');
             wrapper.innerHTML =
                 `<div class="alert alert-${type} alert-dismissible text-nowrap" role="alert">
-<<<<<<< HEAD
                            <div>${message}</div>
                         </div>`;
         }
 
-=======
-                   <div>${message}</div>
-                </div>`;
-        }
->>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
     </script>
 }
