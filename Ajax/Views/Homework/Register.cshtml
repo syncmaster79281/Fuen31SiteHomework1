@@ -28,9 +28,8 @@
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div> 
             <div class="mb-2">
-                <label for="userAvatar" class="custom-file-label">頭像:</label>
-                <input type="file" class="custom-file-input" id="userAvatar" name="avatar">
-           
+                <label for="userAvatar" class="form-label">頭像:</label>
+                <input type="file" class="form-control" id="userAvatar" name="avatar">
             </div>
             <div id="wrap"></div>
             <div class="mb-2">
@@ -58,7 +57,6 @@
             const url = `@Url.Content("~/api/CheckAccount")?name=${name.value}`;
             const response = await fetch(url)
             const result = await response.text();
-            console.log(result);
             if (result == "帳號可以使用") {
                 span.classList.remove('text-danger');
                 span.classList.add('text-success');

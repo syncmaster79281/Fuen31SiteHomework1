@@ -1,4 +1,4 @@
-﻿namespace Ajax.Models.ViewModels
+﻿namespace Ajax.Models.Dtos
 {
     public class UserDto
     {
