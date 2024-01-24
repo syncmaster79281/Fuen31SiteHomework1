@@ -92,6 +92,16 @@ namespace Ajax.Controllers
             return Json(spotJson);
         }
 
+        public IActionResult SpotCategories()
+        {
+            var categories = _dbContext.Categories.Select(c => new SpotCategoryDto
+            {
+                CategoryId = c.CategoryId,
+                CategoryName = c.CategoryName
+            }).ToList();
+            return Json(categories);
+        }
+
 
         [HttpPost]
         public IActionResult Register(Member member, IFormFile Avatar)

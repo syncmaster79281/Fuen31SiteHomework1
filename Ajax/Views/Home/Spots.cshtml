@@ -5,17 +5,38 @@
 
 <h1>台北市景點</h1>
 <div class="row">
-    <div class="col-3"></div>
+    <div class="col-3">
+        <select class="form-select" id="pageSize">
+            <option value="1">每頁1筆</option>
+            <option value="3">每頁3筆</option>
+            <option value="5">每頁5筆</option>
+            <option value="7">每頁7筆</option>
+            <option value="9">每頁9筆</option>
+        </select>
+    </div>
     <div class="col-6 align-content-center">
-        <nav class="mb-3">
-            <ul class="pagination" id="ulPaging"></ul>
-        </nav>
+        <div class="row mb-3">
+            <div class="col-8">
+                <nav>
+                    <ul class="pagination" id="ulPaging"></ul>
+                </nav>
+            </div> 
+            <div class="col-4">
+                <select class="form-select" id="sortType">
+                    <option value="asc">景點編號升冪</option>
+                    <option value="desc">景點編號降冪</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="col-3">
-        <input type="search" id="inputKeyword" placeholder="景點搜尋" class="form-control" />
+        <div class="row">
+           <input type="search" id="inputKeyword" placeholder="景點搜尋" class="form-control" />
+        </div>
     </div>
 </div>
-
+<div class="btn-group mb-2 d-flex" role="group" id="divCategory">
+</div>
 <div id="divSpot" class="row row-cols-1 row-cols-md-3 g-4">   
 
 </div>
@@ -33,6 +54,10 @@
         .imgSize{
             height: 215px;
         }
+
+        .custom-height{
+            height: 50px;
+        }
     </style>
 }
 
@@ -41,6 +66,9 @@
         const divSpot = document.querySelector('#divSpot');
         const ulPaging = document.querySelector('#ulPaging');
         const inpSearch = document.querySelector('#inputKeyword');
+        const divCategory = document.querySelector('#divCategory');
+        const pageSize = document.querySelector('#pageSize');
+        const sortType = document.querySelector('#sortType');
 
         const searchData = {
             "categoryId": 0,
@@ -50,6 +78,22 @@
             "sortType": "asc",
             "sortBy": ""
         };
+
+        //pageSize select事件監聽
+        pageSize.addEventListener('change', async(event)=> {
+            // 獲取選擇的值
+            const pSize = event.target.value;
+            searchData.pageSize = pSize;
+            loadSpots();
+        });
+
+        //sortType select事件監聽
+        sortType.addEventListener('change', async (event) => {
+            // 獲取選擇的值
+            const sortT = event.target.value;
+            searchData.sortType = sortT;
+            loadSpots();
+        });
 
         //根據searchData讀取景點資料
         const loadSpots = async () => {
@@ -66,9 +110,9 @@
             //載入景點     JSon
             const htmlSpots = spots.spotsResult.map(spot => {
                 return (`
-                <div class="col">
+                    <div class="col">
                         <div class="card h-100">
-                          <img src="${spot.spotImage}" class="card-img-top imgSize" alt="${spot.spotTitle}">
+                            <img src="${spot.spotImage}" class="card-img-top imgSize" alt="${spot.spotTitle}">
                             <div class="card-body">
                                 <h5 class="card-title">${spot.spotId} ${spot.spotTitle}</h5>
                                 <p class="card-text">${spot.spotDescription.length <= 100 ? spot.spotDescription : spot.spotDescription.substring(0, 100)}...</p>
@@ -77,7 +121,8 @@
                                 <small class="text-body-secondary">${spot.address}</small>
                             </div>
                         </div>
-                    </div> `)
+                    </div> 
+                 `)
             })
 
             divSpot.innerHTML = htmlSpots.join("")
@@ -90,17 +135,37 @@
                     return (`
                         <li class="page-item" onclick="pagingHandler(${page})">
                         <a class="page-link currentPage"> ${page}</a>
-                        </li>`)
+                        </li>
+                     `)
                 } else {
                     return (`
                         <li class="page-item" onclick="pagingHandler(${page})">
                             <a class="page-link"> ${page}</a>
-                        </li>`)
+                        </li>
+                    `)
                 }
             });
 
             ulPaging.innerHTML = htmlPaging.join("");
+
         };
+
+
+        (async () => {
+            const response = await fetch('@Url.Content("~/api/SpotCategories")');
+            const categories = await response.json();
+
+            //產生分類按鈕
+            const htmlCategory = categories.map(c => {
+                return (`
+                    <input type="radio" class="btn-check " name="btnradio" id="btnradio${c.categoryId}" onclick="categoryHandler(${c.categoryId})">
+                    <label class="btn btn-outline-primary flex-grow-1 text-center d-flex align-items-center custom-height" for="btnradio${c.categoryId}">${c.categoryName}</label>
+                `)
+            });
+
+            divCategory.innerHTML = htmlCategory.join("");
+        })();
+
 
         //分頁
         const pagingHandler = async (page) => {
@@ -117,15 +182,32 @@
             });
         };
 
+        //類別篩選
+        const categoryHandler = async (categoryId) => {
+            searchData.categoryId = categoryId;
+            await loadSpots();
+        };
+
         //搜尋
         inpSearch.addEventListener('keydown', event => {
             //console.log(event.which); 輸出按鍵的數字
             if (event.keyCode === 13) {
                 searchData.keyword = event.target.value;
+                searchData.categoryId = 0;
                 searchData.page = 1;
                 loadSpots();
+                clearRadioButtons('divCategory');
             }
         });
+
+        //取消radio選擇
+        function clearRadioButtons(containerId) {
+            var radios = document.querySelectorAll(`#${containerId} input[type='radio']`);
+            radios.forEach(radio => {
+                radio.checked = false;
+            });
+        }
+
 
         //載入景點
         loadSpots();
