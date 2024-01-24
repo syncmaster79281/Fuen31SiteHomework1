@@ -39,6 +39,7 @@ namespace Ajax.Controllers
             }
             return NotFound(); //404
         }
+<<<<<<< HEAD
         public IActionResult Register(UserDto dto)
         {
             if (string.IsNullOrEmpty(dto.Name))
@@ -48,6 +49,28 @@ namespace Ajax.Controllers
             return Content($"Hello {dto.Name}, {dto.Age}歲了，電子信箱是 {dto.Email}");
         }
 
+=======
+        public IActionResult Register(string name, int age = 26)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "Gust";
+            }
+            return Content($"Hello {name}, You are {age} years old !");
+        }
+        public IActionResult RegisterMember(string name, string email, int age = 16)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "Gust";
+            }
+            if (string.IsNullOrEmpty(email))
+            {
+                name = "Gust@gmail.com";
+            }
+            return Content($"Hello {name}, {age}歲了，電子信箱是 {email}");
+        }
+>>>>>>> 77efbaf5b1ab0651374f08e2692355b708ab8873
         public IActionResult Districts(string city)
         {
             var districts = _dbContext.Addresses.Where(a => a.City == city).Select(a => a.SiteId).Distinct();
