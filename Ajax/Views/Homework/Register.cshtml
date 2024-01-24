@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register">
+        <form asp-action="Register" id="userForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-2">
                 <label asp-for="Name" class="form-label"></label>
@@ -79,5 +79,13 @@
             const value = await response.text();
             appendAlert(value,"info")
         });
+
+        const theForm = document.querySelector('#userForm');
+        //透過formdata取得表單資料
+        const formData=new FormData(theForm);
+        formData.append("city","中壢");
+        for (const pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
     </script>
 }
