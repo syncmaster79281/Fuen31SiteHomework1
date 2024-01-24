@@ -23,10 +23,20 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="mb-2">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" id="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" id="confirmPassword" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
                 <label asp-for="Age" class="form-label"></label>
                 <input asp-for="Age" class="form-control" id="age" />
                 <span asp-validation-for="Age" class="text-danger"></span>
-            </div> 
+            </div>
             <div class="mb-2">
                 <label for="userAvatar" class="form-label">頭像:</label>
                 <input type="file" class="form-control" id="userAvatar" name="avatar">
@@ -95,8 +105,8 @@
             const wrapper = document.querySelector('#wrap');
             wrapper.innerHTML =
                 `<div class="alert alert-${type} alert-dismissible text-nowrap" role="alert">
-                           <div>${message}</div>
-                        </div>`;
+                                   <div>${message}</div>
+                                </div>`;
         }
 
     </script>
