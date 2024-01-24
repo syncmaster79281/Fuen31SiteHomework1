@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+<select id="city">
+</select>
+<select id="site">
+</select>
+<select id="road">
+</select>
+
+@section Scripts{
+    <script>
+        const citySelect = document.querySelector('#city');
+        const districtSelect = document.querySelector('#site');
+        const roadSelect = document.querySelector('#road');
+
+        (async () => { 
+            const response = await fetch('@Url.Content("~/api/cities")');
+            const cities = await response.json();
+            cities.unshift('請選擇');
+            const optCities = cities.map(city => `<option value="${city}">${city}</option>`);
+            citySelect.innerHTML = optCities.join("");
+        })();
+
+        citySelect.addEventListener('change', async () => {
+            const city = citySelect.value;
+            const response = await fetch(`@Url.Content("~/api/Districts")?city=${city}`);
+            const districts = await response.json();
+            districts.unshift('請選擇');
+            const optDistricts = districts.map(dist => `<option value="${dist}">${dist}</option>`);
+            districtSelect.innerHTML = optDistricts.join("");
+            roadSelect.innerHTML = '<option value="請選擇">請選擇</option>';
+        });
+
+        districtSelect.addEventListener('change', async () => {
+            const dist = districtSelect.value;
+            const response = await fetch(`@Url.Content("~/api/Rouds")?district=${dist}`);
+            const rounds = await response.json();
+            rounds.unshift('請選擇');
+            const optRounds = rounds.map(round => `<option value="${round}">${round}</option>`);
+            roadSelect.innerHTML = optRounds.join("");
+        });
+     
+    </script>
+}
