@@ -47,6 +47,7 @@ namespace Ajax.Controllers
             }
             return Content($"Hello {dto.Name}, {dto.Age}歲了，電子信箱是 {dto.Email}");
         }
+
         public IActionResult Districts(string city)
         {
             var districts = _dbContext.Addresses.Where(a => a.City == city).Select(a => a.SiteId).Distinct();

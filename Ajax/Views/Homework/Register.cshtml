@@ -37,7 +37,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
 
         const span = document.querySelector('#checkName');
@@ -45,7 +47,7 @@
         const email = document.querySelector('#email');
         const age = document.querySelector('#age');
         const btn = document.querySelector('#btn')
-        
+
         // 判斷Name是否重複
         name.addEventListener('change', async () => {
             const url = `@Url.Content("~/api/CheckAccount")?name=${name.value}`;
@@ -62,30 +64,37 @@
             span.innerHTML = result;
         });
 
+
+        btn.addEventListener('click', async (event) => {
+            event.preventDefault(); //防止submit 送出
+
+            //練習get方法傳送資料到API 並接收回傳值
+            // const url = `@Url.Content("~/api/Register")?name=${name}&email=${email}&age=${age}`;
+            // console.log(url);
+            // const response = await fetch(url);
+
+            //練習post方法透過formdata取得表單資料
+            const theForm = document.querySelector('#userForm');
+            const formData = new FormData(theForm);
+            const url = `@Url.Content("~/api/Register")`;
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+
+            const value = await response.text();
+            appendAlert(value, "info")
+
+        });
+
         //顯示訊息 Hello {name}, {age}歲了，電子信箱是 {email}
         const appendAlert = (message, type) => {
             const wrapper = document.querySelector('#wrap');
             wrapper.innerHTML =
                 `<div class="alert alert-${type} alert-dismissible text-nowrap" role="alert">
-                   <div>${message}</div>
-                </div>`;
+                           <div>${message}</div>
+                        </div>`;
         }
 
-        btn.addEventListener('click', async(event) => {
-            event.preventDefault(); //防止submit 送出
-            console.log(`${name},${email},${age}`)
-            const url = `@Url.Content("~/api/Register")?name=${name.value}&email=${email.value}&age=${age.value}`;
-            const response = await fetch(url);
-            const value = await response.text();
-            appendAlert(value,"info")
-        });
-
-        const theForm = document.querySelector('#userForm');
-        //透過formdata取得表單資料
-        const formData=new FormData(theForm);
-        formData.append("city","中壢");
-        for (const pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
     </script>
 }
