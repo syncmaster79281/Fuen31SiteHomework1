@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "First";
+}
+
+<h1>First</h1>
+<button id="btn1"class="btn btn-sm btn-primary mb-2">Ajax開始</button>
+<button id="btnStop"class="btn btn-sm btn-warning mb-2">Ajax停止</button>
+<img src="~/images//icons8-spinner.gif" id="imgLoading" style="display:none" />
+<div id="div1"></div>
+
+@section Scripts{
+    <script>
+        const btn = document.querySelector('#btn1');
+
+        const theDiv = document.querySelector('#div1');
+        const imgLoader = document.querySelector('#imgLoading');
+
+        const btnStop = document.querySelector('#btnStop');
+
+        let abortController;
+
+        //停止Ajax 方法
+        btnStop.addEventListener('click', () => {
+            if (abortController) {
+                abortController.abort();  //停止Ajax
+            }
+        });
+
+        // 最新寫法
+        btn.addEventListener('click', async () => {
+            try {
+
+                imgLoader.style.display = "inline";
+                btn.setAttribute("disabled", "disabled");
+
+                //Ajax
+                abortController = new AbortController();  
+                const signal = abortController.signal;  //停止訊號
+
+                const response = await fetch('@Url.Content("~/api/index")', { signal }); //帶停止訊號
+
+
+                // not false
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+
+                const data = await response.text();
+
+                appendAlert(data, "success");
+
+            } catch (error) {
+
+                appendAlert(error, "danger");
+
+            } finally {
+
+                imgLoader.style.display = "none";
+                btn.removeAttribute("disabled");
+
+            }
+        });
+
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
+
+            theDiv.append(wrapper)
+        }
+
+
+        //寫法一
+        // btn.addEventListener('click',()=> {
+        //     // theDiv.innerHTML = 'Ajax...';
+        //     //fetch 底層是promise
+        //     // fetch('~/api/index') javascript 不能使用~ 會報錯 所以要用Razor語法
+        //     fetch('@Url.Content("~/api/index")')
+        //         .then(response => {
+        //             // console.log(response); 
+        //             // console.log(response.text()); //回傳promise物件 用.text() 是根據response 的 body資料來決定
+                    
+        //             // 取出header資料
+        //             response.headers.forEach((value, name) => {
+        //                 console.log(`${name} : ${value}`);
+        //             });
+
+        //             // 如果取回資料失敗
+        //             if (!response.ok) {
+        //                 throw new Error(response.statusText);
+        //             }
+        //             //取出方法
+        //             // arrayBuffer() 進階使用 二進位資料
+        //             // blob()二進位資料 
+        //             // formData() 
+        //             // json() JSon 
+        //             // text() 文字
+        //             return response.text();
+        //         })
+        //         .then(data => {
+        //             //讀出資料顯示資料
+        //             // console.log(data);
+        //             const wrapper = document.createElement('div')
+        //             wrapper.innerHTML = [
+        //                 `<div class="alert alert-warning alert-dismissible" role="alert">`,
+        //                 `   <div>${data}</div>`,
+        //                 '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        //                 '</div>'
+        //             ].join('')
+
+        //             theDiv.append(wrapper)
+        //         });
+        // });
+    </script>
+}
+
+

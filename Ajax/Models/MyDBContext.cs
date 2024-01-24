@@ -37,6 +37,7 @@ public partial class MyDBContext : DbContext
     {
         modelBuilder.Entity<Address>(entity =>
         {
+            //類別對應table關係寫在這裡
             entity.ToTable("Address");
 
             entity.Property(e => e.Id).ValueGeneratedNever();

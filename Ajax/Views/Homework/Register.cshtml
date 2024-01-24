@@ -1,0 +1,84 @@
+﻿@model Ajax.Models.ViewModels.MemberVm
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>註冊會員</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-2">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" id="name" />
+                <span asp-validation-for="Name" class="text-danger" id="checkName"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" id="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="Age" class="form-label"></label>
+                <input asp-for="Age" class="form-control" id="age" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div id="wrap"></div>
+            <div class="mb-2">
+                <button id="sentBtn" type="button" value="註冊" class="btn btn-primary">送出</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const nameInput = document.querySelector('#name');
+        const span = document.querySelector('#checkName');
+        const sentBtn = document.querySelector('#sentBtn');
+        
+        // 判斷Name是否重複
+        nameInput.addEventListener('change', async() => {
+            const value = nameInput.value;
+            const url = `@Url.Content("~/api/CheckAccount")?name=${value}`;
+            const response = await fetch(url)
+            const result = await response.text();
+            console.log(result);
+            if (result == "帳號可以使用") {
+                span.classList.remove('text-danger');
+                span.classList.add('text-success');
+            } else if (result == "帳號已存在") {
+                span.classList.remove('text-success');
+                span.classList.add('text-danger');
+            }
+            span.innerHTML = result;
+        });
+
+        //練習get方法傳送資料到API 並接收回傳值
+        sentBtn.addEventListener('click', async() => {
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+            const age = document.querySelector('#age').value;
+            const url = `@Url.Content("~/api/RegisterMember")?name=${name}&email=${email}&age=${age}`;
+            console.log(url);
+            const response = await fetch(url);
+            const value = await response.text();
+            appendAlert(value,"info")
+
+        });
+
+        //顯示訊息 Hello {name}, {age}歲了，電子信箱是 {email}
+        const appendAlert = (message, type) => {
+            const wrapper = document.querySelector('#wrap');
+            wrapper.innerHTML =
+                `<div class="alert alert-${type} alert-dismissible text-nowrap" role="alert">
+                   <div>${message}</div>
+                </div>`;
+        }
+    </script>
+}
