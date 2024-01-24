@@ -23,12 +23,7 @@ namespace Ajax.Controllers
             return Content("Hello Content, 您好!", "text/plain", System.Text.Encoding.UTF8);
         }
         //Get 方法
-        public IActionResult Cities()
-        {
-            var citiers = _dbContext.Addresses.Select(a => a.City).Distinct();
-            //return View();
-            return Json(citiers);
-        }
+
         public IActionResult Avatar(int id = 1)
         {
             Member? member = _dbContext.Members.Find(id);
@@ -46,10 +41,16 @@ namespace Ajax.Controllers
             {
                 dto.Name = "Gust";
             }
-            return Content($"Hello {dto.Name}, {dto.Age}歲了，電子信箱是 {dto.Email}");
+            //return Content($"Hello {dto.Name}, {dto.Age}歲了，電子信箱是 {dto.Email}");
+            return Content($"{dto.Avatar?.FileName}-{dto.Avatar?.Length}-{dto.Avatar?.ContentType}");
         }
 
-
+        public IActionResult Cities()
+        {
+            var citiers = _dbContext.Addresses.Select(a => a.City).Distinct();
+            //return View();
+            return Json(citiers);
+        }
         public IActionResult Districts(string city)
         {
             var districts = _dbContext.Addresses.Where(a => a.City == city).Select(a => a.SiteId).Distinct();

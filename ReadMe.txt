@@ -12,3 +12,4 @@
 	ApiController Api Rouds 回傳區域
 [V] 加入Dto接收資料 修改Register Api
 	使用post 方式傳送Api
+	加入file 傳送方式
