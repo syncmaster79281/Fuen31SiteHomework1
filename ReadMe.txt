@@ -36,3 +36,8 @@
 	增加分頁功能
 	清除radio選項函數
 
+[V] 實作AutoComplete 功能
+	使用Jquery UI Autocomplete
+	使用Ajax 傳送關鍵字到Api
+	Api 回傳關鍵字相關資料
+	使用Jquery UI Autocomplete 顯示資料

@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 @{
     ViewData["Title"] = "Spots";
 }
@@ -20,7 +20,7 @@
                 <nav>
                     <ul class="pagination" id="ulPaging"></ul>
                 </nav>
-            </div> 
+            </div>
             <div class="col-4">
                 <select class="form-select" id="sortType">
                     <option value="asc">景點編號升冪</option>
@@ -31,17 +31,16 @@
     </div>
     <div class="col-3">
         <div class="row">
-           <input type="search" id="inputKeyword" placeholder="景點搜尋" class="form-control" />
+            <input type="search" id="inputKeyword" placeholder="景點搜尋" class="form-control" />
         </div>
     </div>
 </div>
 <div class="btn-group mb-2 d-flex" role="group" id="divCategory">
 </div>
-<div id="divSpot" class="row row-cols-1 row-cols-md-3 g-4">   
-
+<div id="divSpot" class="row row-cols-1 row-cols-md-3 g-4">
 </div>
 
-@section Styles{
+@section Styles {
     <style>
         .pagination li {
             cursor: pointer;
@@ -51,17 +50,17 @@
             background-color: lightblue;
         }
 
-        .imgSize{
+        .imgSize {
             height: 215px;
         }
 
-        .custom-height{
+        .custom-height {
             height: 50px;
         }
     </style>
 }
 
-@section Scripts{
+@section Scripts {
     <script>
         const divSpot = document.querySelector('#divSpot');
         const ulPaging = document.querySelector('#ulPaging');
@@ -80,7 +79,7 @@
         };
 
         //pageSize select事件監聽
-        pageSize.addEventListener('change', async(event)=> {
+        pageSize.addEventListener('change', async (event) => {
             // 獲取選擇的值
             const pSize = event.target.value;
             searchData.pageSize = pSize;
@@ -110,19 +109,19 @@
             //載入景點     JSon
             const htmlSpots = spots.spotsResult.map(spot => {
                 return (`
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="${spot.spotImage}" class="card-img-top imgSize" alt="${spot.spotTitle}">
-                            <div class="card-body">
-                                <h5 class="card-title">${spot.spotId} ${spot.spotTitle}</h5>
-                                <p class="card-text">${spot.spotDescription.length <= 100 ? spot.spotDescription : spot.spotDescription.substring(0, 100)}...</p>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="${spot.spotImage}" class="card-img-top imgSize" alt="${spot.spotTitle}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${spot.spotId} ${spot.spotTitle}</h5>
+                                        <p class="card-text">${spot.spotDescription.length <= 100 ? spot.spotDescription : spot.spotDescription.substring(0, 100)}...</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-body-secondary">${spot.address}</small>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-footer">
-                                <small class="text-body-secondary">${spot.address}</small>
-                            </div>
-                        </div>
-                    </div> 
-                 `)
+                         `)
             })
 
             divSpot.innerHTML = htmlSpots.join("")
@@ -133,16 +132,16 @@
                 if (page > 10) return;
                 if (page === 1) {
                     return (`
-                        <li class="page-item" onclick="pagingHandler(${page})">
-                        <a class="page-link currentPage"> ${page}</a>
-                        </li>
-                     `)
+                                <li class="page-item" onclick="pagingHandler(${page})">
+                                <a class="page-link currentPage"> ${page}</a>
+                                </li>
+                             `)
                 } else {
                     return (`
-                        <li class="page-item" onclick="pagingHandler(${page})">
-                            <a class="page-link"> ${page}</a>
-                        </li>
-                    `)
+                                <li class="page-item" onclick="pagingHandler(${page})">
+                                    <a class="page-link"> ${page}</a>
+                                </li>
+                            `)
                 }
             });
 
@@ -158,9 +157,9 @@
             //產生分類按鈕
             const htmlCategory = categories.map(c => {
                 return (`
-                    <input type="radio" class="btn-check " name="btnradio" id="btnradio${c.categoryId}" onclick="categoryHandler(${c.categoryId})">
-                    <label class="btn btn-outline-primary flex-grow-1 text-center d-flex align-items-center custom-height" for="btnradio${c.categoryId}">${c.categoryName}</label>
-                `)
+                            <input type="radio" class="btn-check " name="btnradio" id="btnradio${c.categoryId}" onclick="categoryHandler(${c.categoryId})">
+                            <label class="btn btn-outline-primary flex-grow-1 text-center d-flex align-items-center custom-height" for="btnradio${c.categoryId}">${c.categoryName}</label>
+                        `)
             });
 
             divCategory.innerHTML = htmlCategory.join("");
@@ -214,4 +213,3 @@
 
     </script>
 }
-

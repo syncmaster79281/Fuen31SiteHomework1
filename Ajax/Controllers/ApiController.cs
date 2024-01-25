@@ -92,6 +92,13 @@ namespace Ajax.Controllers
             return Json(spotJson);
         }
 
+        public IActionResult SpotTitle(string keyword)
+        {
+            var spots = _dbContext.Spots.Where(s => s.SpotTitle.Contains(keyword))
+               .Select(s => s.SpotTitle).Take(8);
+            return Json(spots);
+        }
+
         public IActionResult SpotCategories()
         {
             var categories = _dbContext.Categories.Select(c => new SpotCategoryDto
