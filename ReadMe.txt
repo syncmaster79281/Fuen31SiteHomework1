@@ -30,11 +30,7 @@
 	使用SHA256 加密 會員密碼
 	並寫入資料庫
 
-<<<<<<< HEAD
 [V] Homework4 2024/01/24 (Homework4 HomeController Spots.html)
-=======
-[V] Homework4 2024/01/24 (Homework4 HomeworkController Spots.html)
->>>>>>> 78b20d3587804ce0a7be01d1845f09d5793423f3
 	增加關鍵字搜尋
 	增加排序功能
 	增加分頁功能
